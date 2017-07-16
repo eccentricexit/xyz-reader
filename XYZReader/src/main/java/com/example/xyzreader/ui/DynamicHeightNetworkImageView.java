@@ -10,14 +10,17 @@ public class DynamicHeightNetworkImageView extends NetworkImageView {
 
     public DynamicHeightNetworkImageView(Context context) {
         super(context);
+        setScaleType(ScaleType.CENTER_CROP);
     }
 
     public DynamicHeightNetworkImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        setScaleType(ScaleType.CENTER_CROP);
     }
 
     public DynamicHeightNetworkImageView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        setScaleType(ScaleType.CENTER_CROP);
     }
 
     public void setAspectRatio(float aspectRatio) {
