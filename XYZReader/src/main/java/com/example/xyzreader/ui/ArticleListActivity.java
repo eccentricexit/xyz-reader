@@ -258,7 +258,11 @@ public class ArticleListActivity extends AppCompatActivity implements
         if(hasConnectivity(this,false))
             startService(new Intent(this, UpdaterService.class));
         else {
-            Snackbar.make(findViewById(R.id.article_list_coordinator), R.string.no_connection_msg, Snackbar.LENGTH_LONG).show();
+            Snackbar.make(
+                    findViewById(R.id.article_list_coordinator),
+                    R.string.no_connection_msg,
+                    Snackbar.LENGTH_LONG).show();
+
             mIsRefreshing = false;
             updateRefreshingUI();
         }
