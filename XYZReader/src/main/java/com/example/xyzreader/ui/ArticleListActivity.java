@@ -9,8 +9,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.Loader;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -95,19 +98,6 @@ public class ArticleListActivity extends AppCompatActivity implements
 
                 mTmpReenterState = null;
             }
-//            else {
-//                // If mTmpReenterState is null, then the activity is exiting.
-//                View navigationBar = findViewById(android.R.id.navigationBarBackground);
-//                View statusBar = findViewById(android.R.id.statusBarBackground);
-//                if (navigationBar != null) {
-//                    names.add(navigationBar.getTransitionName());
-//                    sharedElements.put(navigationBar.getTransitionName(), navigationBar);
-//                }
-//                if (statusBar != null) {
-//                    names.add(statusBar.getTransitionName());
-//                    sharedElements.put(statusBar.getTransitionName(), statusBar);
-//                }
-//            }
         }
     };
 
@@ -265,7 +255,13 @@ public class ArticleListActivity extends AppCompatActivity implements
     }
 
     private void refresh() {
-        startService(new Intent(this, UpdaterService.class));
+        if(hasConnectivity(this,false))
+            startService(new Intent(this, UpdaterService.class));
+        else {
+            Snackbar.make(findViewById(R.id.article_list_coordinator), R.string.no_connection_msg, Snackbar.LENGTH_LONG).show();
+            mIsRefreshing = false;
+            updateRefreshingUI();
+        }
     }
 
     @Override
@@ -323,11 +319,13 @@ public class ArticleListActivity extends AppCompatActivity implements
         refresh();
     }
 
-
-
-
-
-
+    public static boolean hasConnectivity(Context context, boolean roamingOK) {
+        boolean hasConnectivity;
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = connectivityManager.getActiveNetworkInfo();
+        hasConnectivity = info != null && (info.isConnected() || (roamingOK && info.isRoaming()));
+        return hasConnectivity;
+    }
 
 
 }

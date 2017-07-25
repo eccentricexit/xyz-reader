@@ -9,5 +9,6 @@
 
     <string name="up">Up</string>
     <string name="transition_name">transition_name</string>
+    <string name="no_connection_msg">No connection available</string>
 
 </resources>
