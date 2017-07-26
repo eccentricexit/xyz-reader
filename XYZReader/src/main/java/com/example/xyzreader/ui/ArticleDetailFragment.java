@@ -23,6 +23,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ShareCompat;
 import android.support.v7.graphics.Palette;
 import android.text.Html;
+import android.text.Spanned;
 import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
@@ -52,6 +53,7 @@ public class ArticleDetailFragment extends Fragment implements
     private static final float PARALLAX_FACTOR = 1.25f;
     private static final String ARG_STARTING_ARTICLE_IMAGE_POSITION = "arg_starting_article_position";
     private static final String ARG_ARTICLE_IMAGE_POSITION = "arg_article_position";
+    private static final int MAX_ARTICLE_LENGTH = 600;
 
     private Cursor mCursor;
     private long mItemId;
@@ -256,8 +258,15 @@ public class ArticleDetailFragment extends Fragment implements
                                 + "</font>"));
 
             }
-//            bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n)", "<br />")));
-            bodyView.setText(loremIpsum);
+
+            // Truncating the text because it is extremely large and causes app crashes when
+            // using with transitions.
+            String truncatedBody = mCursor.getString(ArticleLoader.Query.BODY)
+                    .substring(0,MAX_ARTICLE_LENGTH)
+                    .replaceAll("(\r\n|\n)", "<br />");
+
+            bodyView.setText(Html.fromHtml(truncatedBody));
+
             ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
                     .get(mCursor.getString(ArticleLoader.Query.PHOTO_URL), new ImageLoader.ImageListener() {
                         @Override
@@ -356,10 +365,4 @@ public class ArticleDetailFragment extends Fragment implements
         container.getHitRect(containerBounds);
         return view.getLocalVisibleRect(containerBounds);
     }
-
-    String loremIpsum = "ed sed condimentum ex. Integer maximus purus ex, vitae maximus enim " +
-            "sodales ornare. Curabitur sit amet ullamcorper urna. Etiam interdum quam ut sodales " +
-            "ullamcorper. Morbi at ligula faucibus, fringilla arcu vel, ullamcorper ante. " +
-            "Vestibulum at tellus non urna fermentum imperdiet in non tortor. Pellentesque " +
-            "habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.";
 }
