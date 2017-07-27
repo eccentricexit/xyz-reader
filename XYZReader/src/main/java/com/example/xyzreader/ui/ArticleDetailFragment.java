@@ -259,13 +259,11 @@ public class ArticleDetailFragment extends Fragment implements
 
             }
 
-            // Truncating the text because it is extremely large and causes app crashes when
-            // using with transitions.
-            String truncatedBody = mCursor.getString(ArticleLoader.Query.BODY)
-                    .substring(0,MAX_ARTICLE_LENGTH)
+
+            String articleBody = mCursor.getString(ArticleLoader.Query.BODY)
                     .replaceAll("(\r\n|\n)", "<br />");
 
-            bodyView.setText(Html.fromHtml(truncatedBody));
+            bodyView.setText(Html.fromHtml(articleBody));
 
             ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
                     .get(mCursor.getString(ArticleLoader.Query.PHOTO_URL), new ImageLoader.ImageListener() {
