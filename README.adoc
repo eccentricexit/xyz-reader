@@ -1,3 +1,15 @@
 # XYZ Reader
 
-This repository holds modified code for the xyz project from Udacity's Android Nanodegree.
+This is an android app updated as part of the material design course of Udacity's
+Android Nanodegree program.
+The task was to take a functional app and implement improvements based on the material
+design guidelines and user feedback.
+
+## Features
+- Async color pallete generation from photos
+- Shared element transitions with ViewPagers and Fragments
+- FAB, Coordinator Layout, Snackbar, etc.
+- Material colors, app-wide theme, different layout for different screen sizes.
+
+## Screenshots
+_TODO_
