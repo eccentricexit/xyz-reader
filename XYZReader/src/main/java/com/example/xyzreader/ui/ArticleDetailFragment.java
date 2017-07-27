@@ -259,7 +259,8 @@ public class ArticleDetailFragment extends Fragment implements
 
             }
 
-
+            // Truncating the text because it is quite large and causes app crashes when
+            // loading with transitions.
             String trucatedBody = mCursor.getString(ArticleLoader.Query.BODY)
                     .substring(0,MAX_ARTICLE_LENGTH)
                     .replaceAll("(\r\n|\n)", "<br />");
