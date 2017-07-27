@@ -53,7 +53,7 @@ public class ArticleDetailFragment extends Fragment implements
     private static final float PARALLAX_FACTOR = 1.25f;
     private static final String ARG_STARTING_ARTICLE_IMAGE_POSITION = "arg_starting_article_position";
     private static final String ARG_ARTICLE_IMAGE_POSITION = "arg_article_position";
-    private static final int MAX_ARTICLE_LENGTH = 600;
+    private static final int MAX_ARTICLE_LENGTH = 1000;
 
     private Cursor mCursor;
     private long mItemId;
@@ -260,10 +260,11 @@ public class ArticleDetailFragment extends Fragment implements
             }
 
 
-            String articleBody = mCursor.getString(ArticleLoader.Query.BODY)
+            String trucatedBody = mCursor.getString(ArticleLoader.Query.BODY)
+                    .substring(0,MAX_ARTICLE_LENGTH)
                     .replaceAll("(\r\n|\n)", "<br />");
 
-            bodyView.setText(Html.fromHtml(articleBody));
+            bodyView.setText(Html.fromHtml(trucatedBody));
 
             ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
                     .get(mCursor.getString(ArticleLoader.Query.PHOTO_URL), new ImageLoader.ImageListener() {
@@ -271,8 +272,6 @@ public class ArticleDetailFragment extends Fragment implements
                         public void onResponse(final ImageLoader.ImageContainer imageContainer, boolean b) {
                             Bitmap bitmap = imageContainer.getBitmap();
                             if (bitmap != null) {
-                                Palette p = Palette.generate(bitmap, 12);
-
                                 Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
                                     public void onGenerated(Palette p) {
                                         mMutedColor = p.getDarkMutedColor(0xFF333333);
